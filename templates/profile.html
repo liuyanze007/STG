@@ -13,7 +13,9 @@ Leaderboard
         <th>Cash</th>
         <th>FullName</th>
         <th>Email</th>
+        <th>Phonenumber</th>
         <th>FacebookLink</th>
+        <th>Edit</th>
     </tr>
 
     <tr>
@@ -22,6 +24,11 @@ Leaderboard
         <td>{{ user_info[2] }}</td>
         <td>{{ user_info[3] }}</td>
         <td>{{ user_info[4] }}</td>
+        <td>{{ user_info[5] }}</td>
+        <td>{{ user_info[6] }}</td>
+
+        <td><a href="{{ url_for('modify_user_info') }}?user_id={{ user_info[0] }}">Edit</a></td>
+
     </tr>
 </table>
 
