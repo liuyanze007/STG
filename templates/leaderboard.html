@@ -24,7 +24,7 @@ Leaderboard
             Add Friend
         </th>
 
-
+        {% if is_administrator==1 %}
         <th>
             Add Person(Admin)
         </th>
@@ -32,6 +32,13 @@ Leaderboard
         <th>
             Delete Person (Admin)
         </th>
+
+
+        <th>
+            Add TO Be Administrator
+        </th>
+
+     {% endif %}
 
     </tr>
     {% for user in leaders %}
@@ -43,11 +50,18 @@ Leaderboard
         <td>{{ usd(user[2]) }}</td>
         <td>{{ usd(user[1] + user[2]) }}</td>
 
-        <td><a href="{{ url_for('like') }}?user_id={{ user[3] }}">{{ user[0] }}</a></td>
+        <td><a href="{{ url_for('like') }}?like_id={{ user[3] }}&from_id={{ current_userid }}">Add</a></td>
+
+
+        {% if is_administrator == 1 %}
 
         <td><a href="{{ url_for('add_user_info') }}">ADD</a></td>
-
         <td><a href="{{ url_for('delete_user_info') }}?user_id={{ user[3] }}">DELETE</a></td>
+
+        <td><a href="{{ url_for('add_user_to_be_administrator') }}?user_id={{ user[3] }}">Add To Be Administrator</a></td>
+        <td><a href="{{ url_for('delete_user_not_to_be_administrator') }}?user_id={{ user[3] }}">Delete Not To Be Administrator</a></td>
+
+        {% endif %}
 
     </tr>
     {% endfor %}
