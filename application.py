@@ -2,6 +2,10 @@ import sqlite3
 import re
 import time
 
+import os
+
+import random
+
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from passlib.hash import sha256_crypt
@@ -71,6 +75,41 @@ def send_email():
     msg = Message(subject="ALARM!!!!!", sender='747552283@qq.com', recipients=[email_string])    
     msg.html = "ALARM!!!!!!!!!!"   
     mail.send(msg)   
+
+
+
+
+@app.route("/accept")
+def accept():   
+
+    from_id=request.args.get("from_id")
+    #current_user=request.args.get("user_id")
+    current_user = session["user_id"]
+    message_id=request.args.get("message_id")
+   
+
+    from_username= c.execute("SELECT username FROM users WHERE id = :CURRENT_USER", [from_id]).fetchall()[0][0]
+    to_username= c.execute("SELECT username FROM users WHERE id = :CURRENT_USER", [current_user]).fetchall()[0][0]
+
+
+    return render_template("accept.html",from_id=from_id,to_id=current_user,from_username=from_username,to_username=to_username,message_id=message_id)
+
+
+
+@app.route("/dashboard")
+def dashboard():   
+    prices=[]
+    for symbol in code_dict:
+        price=[]
+        code=code_dict[symbol];
+        fullname=fullname_dict[symbol];
+        last_price=round(random.uniform(10, 100),2)
+        change_rate=round(random.uniform(1, 4),2)
+        change_price=round(random.uniform(1, 4),2)
+        price=[code,symbol,last_price,change_rate,change_price,fullname]
+        prices.append(price)
+    return render_template("dashboard.html",prices=prices)
+
 
 
 
@@ -297,7 +336,7 @@ def login():
 
         # ensure username exists and password is correct
         if len(all_rows) != 1 or request.form.get("password")!=all_rows[0][2]:
-            return apology("invalid username and/or password")
+            return apology1("invalid username and/or password")
 
         # remember which user has logged in
         session["user_id"] = all_rows[0][0]
@@ -789,7 +828,6 @@ def symbol_search():
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
     if request.method == "GET":
-
         user_id= request.args.get("user_id",'')
         if user_id!="":
            current_user = user_id
@@ -836,6 +874,60 @@ def profile():
             return render_template("symbol_list.html",symbol_list=symbol_list)
         except sqlite3.IntegrityError:
             return apology("Error", "Username taken")
+
+
+
+@app.route("/price", methods=["GET", "POST"])
+def price():
+    if request.method == "GET":
+        user_id= request.args.get("user_id",'')
+        if user_id!="":
+           current_user = user_id
+        else:
+           current_user = session["user_id"]
+        user_info= c.execute("SELECT  id,username,cash,fullname,email,phonenumber,facebooklink FROM users WHERE id = :CURRENT_USER", [current_user]).fetchall()[0]
+        availables = c.execute("SELECT symbol, sum(quantity) FROM transactions WHERE user_id = :user_id GROUP BY symbol",[current_user]).fetchall()
+        for available in availables:
+            symbol=available[0]
+            quantity=available[1]
+            price = c.execute("SELECT price,alarm FROM alarm_info WHERE user_id = :user_id  and symbol = :symbol",[current_user,symbol]).fetchall()
+            print(price)
+            if len(price)>0:
+               availables=[(symbol, quantity,price[0][0],price[0][1])]
+            else:
+               availables=[(symbol, quantity,0.0,"NO_ALARM")]
+        return render_template("price.html",user_info=user_info,availables=availables)
+
+        symbol_search= request.args.get("symbol",'')
+        print(symbol_search)
+        try:
+            symbol_list=[]
+            for symbol in code_dict:
+                if symbol_search in symbol:
+                   code=code_dict[symbol]
+                   fullname=fullname_dict[symbol]
+                   temp_tuple=(code,symbol,fullname)
+                   symbol_list.append(temp_tuple)
+            return render_template("symbol_list.html",symbol_list=symbol_list)
+        except sqlite3.IntegrityError:
+            return apology("Error", "Username taken")
+
+    # if post request
+    elif request.method == "POST":
+        symbol_search= request.form.get("symbol",'')
+        try:
+            symbol_list=[]
+            for symbol in code_dict:
+                if symbol_search in symbol:
+                   code=code_dict[symbol]
+                   fullname=fullname_dict[symbol]
+                   temp_tuple=(code,symbol,fullname)
+                   symbol_list.append(temp_tuple)
+            return render_template("symbol_list.html",symbol_list=symbol_list)
+        except sqlite3.IntegrityError:
+            return apology("Error", "Username taken")
+
+
 
 
 
@@ -992,7 +1084,7 @@ def user_info_list():
         if len(user)>0:
            if user[0]=="admin" or user[0]=="administrator" or user[1]=="1" or user[1]==1:
               users = c.execute("SELECT id,username,fullname,phonenumber,facebooklink FROM users").fetchall()
-              return render_template("user_info_list.html",users=users,current_username=user[0])
+              return render_template("user_info_list.html",users=users,current_username=user[0],is_administrator=user[1])
            else: 
               return redirect(url_for("leaderboard")) 
 
@@ -1041,6 +1133,9 @@ def autocomplete1():
 def plot():
     if request.method == "GET":
         symbol = request.args.get("symbol")
+        print("cd /mnt/tornado_projects/stock/stock/stock_2017_03_31/finance && sh -x 1.sh "+symbol+".csv > static/data/morris-data.js 1>out 2>err ")
+        os.system("cd /mnt/tornado_projects/stock/stock/stock_2017_03_31/finance && nohup sh -x 1.sh "+symbol+".csv > static/data/morris-data.js  2>err &") 
+        time.sleep(5)
         return render_template("plot.html",symbol=symbol)
 
 if __name__ == "__main__":

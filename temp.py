@@ -55,7 +55,9 @@ def history():
     for symbol in temp_dict:
         time.sleep(5)
         price_dict=lookup(symbol)
-        symbol=price_dict["symbol"]
+        if price_dict is None:
+           continue;
+        symbol=price_dict["symbol"]     
         name=price_dict["name"]
         price=price_dict["price"]
 
@@ -75,7 +77,17 @@ def history():
             temp_symbol=key.split("\t")[1]
             if  symbol==temp_symbol:
                 if float(price)>user_symbol_price_dict[key]:
-                   c.execute("UPDATE alarm_info set alarm='ALARM' where user_id=? and symbol=?",(temp_user_id,temp_symbol))
+                   c.execute("UPDATE alarm_info set alarm='ALARM' where user_id=? and symbol=?",[temp_user_id,temp_symbol])
+                   db.commit()
+                   user=c.execute("SELECT email from users where id=?",[temp_user_id]).fetchall()[0]
+                   if len(user)>0:
+                      email=user[0]
+                      if (email is not None) or (email!=""):
+                         print("xxxxxxxxxxx")
+                         redirect("http://47.91.40.70:8088/send_email?email="+email)
+                         print("yyyyyyyyyyyy")
+                else:
+                   c.execute("UPDATE alarm_info set alarm='NO_ALARM' where user_id=? and symbol=?",[temp_user_id,temp_symbol])
                    db.commit()
 
         if not os.path.exists("static/"+symbol+".csv"):

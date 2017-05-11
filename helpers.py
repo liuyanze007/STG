@@ -12,6 +12,16 @@ def apology(top="", bottom=""):
         return s
     return render_template("apology.html", top=escape(top), bottom=escape(bottom))
 
+
+def apology1(top="", bottom=""):
+    def escape(s):
+        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+            ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+            s = s.replace(old, new)
+        return s
+    return render_template("apology1.html", top=escape(top), bottom=escape(bottom))
+
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -36,25 +46,23 @@ def lookup(symbol):
         datareader = csv.reader(webpage.read().decode("utf-8").splitlines())
         row = next(datareader)
     except:
+        print("xxxxx")
         return None
 
     # ensure stock exists
     #YHOO	46.485	0.255	46.41	46.55	46.24	651980
     try:
-
         symbol=row[0]
         price = float(row[1])
-        change= float(row[4])
-        col1= float(row[5])
-        high= float(row[6])
-        low= float(row[7])
-        col2=int(row[8])
+        change=(row[4])
+        col1=(row[5])
+        high=(row[6])
+        low=(row[7])
+        col2=(row[8])
 
     except:
         return None
-
     return {
-
         "name": row[0].upper(),
         "price": price,
         "symbol": row[0].upper(),
