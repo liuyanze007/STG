@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Leaderboard
+{% endblock %}
+
+{% block main %}
+
+<div class="bodywrapper">
+
+  <div class="centercontent">
+
+<div class="pageheader notab">
+            <h1 class="pagetitle">Friend</h1>
+        </div>
+
+        <div id="contentwrapper" class="contentwrapper widgetpage">
+                    <div class="one_half">
+                        <div class="widgetbox">
+                            <div class="title"><h3>Content Slider</h3></div>
+                            <div class="widgetcontent">
+                                <ul id="slidercontent">
+                                  <li>
+                                        <div class="slide_wrap">
+                                        <div class="slide_img"><img src="images/thumbs/image1.png" alt="" /></div>
+                                    <div class="slide_content">
+                                        <h4><a href="">Add Friend</a></h4>
+                                        <p>Send by : {{ from_username }} 
+					Hello {{  to_username  }}, {{ from_username  }} want to make friend with you!!! </p>
+                                        <p><button class="stdbtn btn_lime"><a style="display: block;" href="{{ url_for('accept_like') }}?from_id={{ from_id }}&message_id={{ message_id }}">Approve</a></button> <button class="stdbtn">
+					<a style="display: block;" href="{{ url_for('reject_like') }}?from_id={{ from_id }}&message_id={{ message_id }}">Reject</a></button></p>
+                                    </div>
+                                    </div>
+                                  </li>
+                                <li>
+                         </div>
+<div class="widgetbox">
+                            <div class="widgetcontent padding0 statement">
+                               <table cellpadding="0" cellspacing="0" border="0" class="stdtable">
+                                    <colgroup>
+                                        <col class="con0">
+                                        <col class="con1">
+                                        <col class="con0">
+                                    </colgroup>
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div><!--widgetcontent-->
+                        </div>
+                     </div>
+                </div>
+         </div>
+ </div>
+
+ </div>
+
+{% endblock %}
