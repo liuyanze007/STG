@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+
+<!--<div style="width:100%;text-align:center">
+    <form action="{{ url_for('send_message') }}" method="post" >
+        <h3>Messaage</h3>
+        <fieldset>
+
+            <div class="form-group"  style="display:none" >
+                <input  class="form-control" name="from_id" placeholder="from_id" type="text" value="{{ from_id }}" />
+            </div>
+
+
+
+            <div class="form-group"  style="display:none">
+                <input  class="form-control" name="to_id" placeholder="to_id" type="text" value="{{ to_id }}" />
+            </div>
+
+
+
+            <div class="form-group">
+                <input  class="form-control" name="title" id="title" style="width:30%;height:20%;"  type="text" value="{{ title1 }}"/>
+            </div>
+
+ 
+            <textarea  class="form-control" name="message"  style="width:500px; height:500px;" > {{ message }}</textarea>
+           </br> 
+           </br> 
+
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Send Message</button>
+            </div>
+        </fieldset>
+    </form>
+</div>-->
+
+{% block main %}
+   <h3>Reply Messaage</h3>
+    <div class="centercontent">
+
+        <div class="pageheader">
+            <h1 class="pagetitle">Message</h1>
+            <span class="pagedesc">Message</span>
+
+            <ul class="hornav">
+                <li class="current"><a href="#basicform">Basic</a></li>
+            </ul>
+        </div>
+
+        <div id="contentwrapper" class="contentwrapper">
+
+                <div id="basicform" class="subcontent">
+
+                    <div class="contenttitle2">
+
+                        <h3>Reply Message</h3>
+
+                    </div>
+
+                    <form class="stdform" action="{{ url_for('send_message') }}" method="post">
+                        <p style="display:none">
+                            <label>From_UserName</label>
+                            <span class="field"><input type="text" name="from_id" class="smallinput" value=" {{ from_id }}"/></span>
+                        </p>
+
+                        <p style="display:none" >
+                            <label>Time</label>
+                            <span class="field"><input type="text" name="to_id" class="mediuminput" value="{{ to_id}}" /></span>
+                        </p>
+
+                        <p>
+                            <label>Title</label>
+                            <span class="field"><textarea cols="80" rows="1" class="longinput" name="title" > {{ title1  }}</textarea></span>
+                        </p>
+
+                        <p>
+                            <label>Message</label>
+                            <span class="field">
+                            <textarea cols="80" rows="5" id="textarea2" class="longinput" name="message" >  {{ message }}</textarea>
+                            </span>
+                        </p>
+                 </form>
+            </div><!--subcontent-->
+
+        </div><!--contentwrapper-->
+
+    </div><!-- centercontent -->
+{% endblock %}
+~                                                 

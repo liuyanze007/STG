@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Index
+{% endblock %}
+
+
+
+{% block main %}
+
+<h1 class="cash">Cash: {{ usd(current_cash) }}</h1>
+<h1 class="cash">Assets: {{ usd(stocks_value) }}</h1>
+
+
+
+<div id="contentwrapper" class="contentwrapper">
+
+<div class="contenttitle2">
+  <h3>CURRENT</h3>
+</div>
+
+<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+
+                    <colgroup>
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                           <th class="head0">Symbol</th>
+                           <th class="head1">Security Name</th>
+                           <th class="head0">Shares Available</th>
+                           <th class="head1">Current Price</th>
+                        </tr>
+
+                    </thead>
+
+    <tbody>
+
+    {% for stock in available %}
+    {% if stock[1] > 0 %}
+    <tr>
+        <td>{{ stock[0] }}</td>
+        <td>{{ lookup(stock[0])["name"] }}</td>
+        <td>{{ stock[1] }}</td>
+        <td>{{ usd(lookup(stock[0])["price"]) }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

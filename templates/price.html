@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Leaderboard
+{% endblock %}
+
+{% block main %}
+
+</br>
+</br>
+</br>
+</br>
+</br>
+
+
+<div class="bodywrapper">
+
+  <div class="centercontent">
+        <div class="pageheader">
+            <h1 class="pagetitle">PRICE</h1>
+            <span class="pagedesc">PRICE</span>
+
+            <ul class="hornav">
+                <li class="current" ><a href="#validation">Validation</a></li>
+            </ul>
+        </div>
+
+        <div id="contentwrapper" class="contentwrapper">
+
+	   <div id="validation" class="subcontent">
+
+<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+                    <colgroup>
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                           <th class="head0">Symbol</th>
+                           <th class="head1">Number</th>
+                           <th class="head0">Alarm Price</th>
+                           <th class="head1">Alarm</th>
+                        </tr>
+
+                    </thead>
+    <tbody>
+
+
+    {% for available in  availables %}
+    <tr>
+        <td>{{ available[0] }}</td>
+        <td>{{ available[1] }}</td>
+        <td><a href="{{ url_for('set_price') }}?price={{ available[2] }}&symbol={{ available[0]}}">{{ available[2] }}</a></td>
+
+        <td>{{ available[3] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+            </div><!--subcontent-->
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

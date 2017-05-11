@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta content="initial-scale=1, width=device-width" name="viewport"/>
+
+    <meta name="description" content="">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" />
+
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+
+    <script src="assets/js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+
+
+<link href='http://fonts.googleapis.com/css?family=Lato:400,300,700,400italic,900' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/flexslider.css">
+<link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+<link rel="stylesheet" type="text/css" href="assets/css/fractionslider.css">
+<link rel="stylesheet" href="assets/css/main.css">
+
+
+
+    <title>Stock Market: {% block title %}{% endblock %}</title>
+
+
+
+
+
+
+
+ <script>
+   $(document).ready(function() {  
+    $( "#Transaction_StartTime" ).datepicker();
+    $( "#Transaction_EndTime" ).datepicker();
+  });
+
+
+  </script>
+<script>
+$(document).ready(function() {
+    $("#symbol").autocomplete({
+        source:function(request, response) {
+            $.getJSON("{{url_for('autocomplete')}}",{
+                q: request.term, // in flask, "q" will be the argument to look for using request.args
+            }, function(data) {
+                response(data.matching_results); // matching_results from jsonify
+            });
+        },
+        minLength: 1,
+        select: function(event, ui) {
+            console.log(ui.item.value); // not in your question, but might help later
+        }
+    });
+})
+</script>
+<script>
+$(document).ready(function() {
+    $("#symbol1").autocomplete({
+        source:function(request, response) {
+            $.getJSON("{{url_for('autocomplete1')}}",{
+                q: request.term, // in flask, "q" will be the argument to look for using request.args
+            }, function(data) {
+                response(data.matching_results); // matching_results from jsonify
+            });
+        },
+        minLength: 1,
+        select: function(event, ui) {
+            console.log(ui.item.value); // not in your question, but might help later
+        }
+    });
+})
+</script>
+
+<script>
+$(document).ready(function() {
+
+    $("[name='symbol']").autocomplete({
+        source:function(request, response) {
+            $.getJSON("{{url_for('autocomplete')}}",{
+                q: request.term, // in flask, "q" will be the argument to look for using request.args
+            }, function(data) {
+                response(data.matching_results); // matching_results from jsonify
+            });
+        },
+        minLength: 1,
+        select: function(event, ui) {
+            console.log(ui.item.value); // not in your question, but might help later
+        }
+    });
+})
+</script>
+
+
+
+</head>
+
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar"
+                        data-toggle="collapse" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="{{ url_for('index') }}">
+                </a>
+
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                {% if session.user_id %}
+
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('quote') }}">Quote</a></li>
+                    <li><a href="{{ url_for('sell') }}">Sell</a></li>
+                    <li><a href="{{ url_for('buy') }}">Buy</a></li>
+                    <li><a href="{{ url_for('leaderboard') }}">Leaderboard</a></li>
+                    <li><a href="{{ url_for('history') }}">History</a></li>
+                    <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('friends_list') }}">My Friends</a></li>
+
+                    {% if session.user_id==22 %}
+                    <li><a href="{{ url_for('user_info_list') }}">Users Manage</a></li>
+                    {% endif %}
+
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('message_list') }}">Message Box( unread : {{ unread_message_count }}  total: {{all_message_count }})</a></li>
+                    <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                </ul>
+                {% else %}
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="{{ url_for('message_list') }}">Message Box( unread : {{ unread_message_count}} total: {all_message_count }} )</a></li>
+
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                    <li><a href="{{ url_for('logout') }}">Log In</a></li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    {% if get_flashed_messages() %}
+    <header>
+        <div class="alert alert-info" role="alert">
+            {{ get_flashed_messages() | join(" ") }}
+        </div>
+    </header>
+    {% endif %}
+
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+
+</div>
+
+</body>
+
+</html>

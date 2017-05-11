@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+
+<div style="width:100%;text-align:center">
+    <form action="{{ url_for('send_message') }}" method="post">
+        <h3>Messaage</h3>
+        <fieldset>
+
+
+            <div class="form-group"  style="display:none" >
+                <input  class="form-control" name="from_id" placeholder="from_id" type="text" value="{{ from_id }}" />
+            </div>
+
+
+
+            <div class="form-group"  style="display:none">
+                <input  class="form-control" name="to_id" placeholder="to_id" type="text" value="{{ to_id }}" />
+            </div>
+
+
+
+            <div class="form-group">
+                <input  class="form-control" name="title" id="title" placeholder="title" style="width:30%;height:20%;" type="text"/>
+            </div>
+
+ 
+            <textarea  class="form-control" name="message"  style="width:500px; height:500px;" > </textarea>
+           </br> 
+           </br> 
+
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Send Message</button>
+            </div>
+        </fieldset>
+    </form>
+  </div>
+{% endblock %}

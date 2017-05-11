@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}
+History
+{% endblock %}
+
+{% block main %}
+
+
+
+<body class="withvernav">
+<div class="bodywrapper">
+
+<div class="centercontent tables">
+        <div class="pageheader notab">
+            <h1 class="pagetitle">Tables</h1>
+            <span class="pagedesc">This is a sample description of a page</span>
+        </div>
+
+<div id="contentwrapper" class="contentwrapper">
+
+<div class="contenttitle2">
+  <h3>DASHBOARD</h3>
+</div>
+
+
+<table cellpadding="0" cellspacing="0" border="0" class="stdtable" id="dyntable">
+
+                    <colgroup>
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                           <th class="head0">Symbol Id</th>
+                           <th class="head1">Symbol Name</th>
+                           <th class="head0">Last Price</th>
+                           <th class="head1">Change Rate</th>
+                           <th class="head0">Change Price</th>
+                           <th class="head0">Symbol FullName</th>
+                       </tr>
+                    </thead>
+                    <tfoot>
+    			<tr>
+                           <th class="head0">Symbol Id</th>
+                           <th class="head1">Symbol Name</th>
+                           <th class="head0">Last Price</th>
+                           <th class="head1">Change Rate</th>
+                           <th class="head0">Change Price</th>
+                           <th class="head0">Symbol FullName</th>
+                        </tr>
+                    </tfoot>
+
+    <tbody>
+    {% for price in  prices %}
+    <tr>
+        <td> {{ price[0] }}</td>
+        <td>{{ price[1] }}</td>
+        <td>{{ price[2]  }}</td>
+        <td>{{ price[3]  }}</td>
+        <td>{{ price[4] }}</td>
+        <td>{{ price[5] }}</td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+</div>
+</div>
+</div>
+{% endblock %}
+</body>
+</html>

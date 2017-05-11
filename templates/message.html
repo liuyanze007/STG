@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+   <h3>Messaage</h3>
+    <div class="centercontent">
+
+        <div class="pageheader">
+            <h1 class="pagetitle">Message</h1>
+            <span class="pagedesc">Message</span>
+
+            <ul class="hornav">
+                <li class="current"><a href="#basicform">Basic</a></li>
+            </ul>
+        </div>
+
+        <div id="contentwrapper" class="contentwrapper">
+
+                <div id="basicform" class="subcontent">
+
+                    <div class="contenttitle2">
+                        <h3>Form Style 1</h3>
+                    </div><!--contenttitle-->
+
+                    <form class="stdform" action="" method="post">
+                        <p>
+                            <label>From_UserName</label>
+                            <span class="field"><input type="text" name="input1" class="smallinput" value=" {{ from_username   }}"/></span>
+                        </p>
+
+                        <p>
+                            <label>Time</label>
+                            <span class="field"><input type="text" name="input2" class="mediuminput" value="{{ time1 }}" /></span>
+                        </p>
+
+                        <p>
+                            <label>Title</label>
+                            <span class="field"><textarea cols="80" rows="1" class="longinput" > {{ title1  }}</textarea></span>
+                        </p>
+
+                        <p>
+                            <label>Message</label>
+                            <span class="field">
+                            <textarea cols="80" rows="5" id="textarea2" class="longinput"  >  {{ message }}</textarea>
+                            </span>
+                        </p>
+		 </form>
+            </div><!--subcontent-->
+
+        </div><!--contentwrapper-->
+
+    </div><!-- centercontent -->
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+
+    <div class="contentwrapper padding10">
+        <div class="errorwrapper error404">
+                <div class="errorcontent">
+                <h1>invalid username and/or password</h1>
+                <h3>invalid username and/or password</h3>
+
+                <p>invalid username and/or password</p>
+                <ul>
+                    <li>It never existed.</li>
+                    <li>It got deleted for some reason.</li>
+                    <li>You were looking for something that is not here.</li>
+                    <li>You like this page.</li>
+                </ul>
+                <br />
+                <button class="stdbtn btn_black" onclick="history.back()">Go Back to Previous Page</button> &nbsp;
+                <button onclick="location.href='dashboard'" class="stdbtn btn_orange">Go Back to Dashboard</button>
+            </div><!--errorcontent-->
+        </div><!--errorwrapper-->
+    </div>
+
+{% endblock %}
