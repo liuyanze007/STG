@@ -7,18 +7,46 @@ History
 {% block main %}
 
 
-<table>
-    <tr>
-        <th>User Id</th>
-        <th>User Name</th>
-        <th>Full Name</th>
-        <th>Phone Number</th>
-        <th>Facebook Link</th>
+<div id="contentwrapper" class="contentwrapper">
 
-        <th>Add Person</th>
-        <th>Delete Person</th>
-        <th>Modify Person</th>
-    </tr>
+
+<div class="contenttitle2">
+  <h3>USER INFO LIST</h3>
+</div>
+
+<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+
+                    <colgroup>
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                           <th class="head0">User Id</th>
+                           <th class="head1">User Name</th>
+                           <th class="head0">Full Name</th>
+                           <th class="head1">Phone Number</th>
+                           <th class="head0">Facebook Link</th>
+
+                          {% if is_administrator==1 %}
+        		     <th class="head1">Add Person</th>
+        		     <th class="head0">Delete Person</th>
+        		     <th class="head1">Modify Person</th>
+                             <th class="head0">
+                             Add TO Be Administrator
+                             </th>
+                             <th class="head1">
+                             Delete TO Be Administrator
+                             </th>
+        		  {% endif %}
+                        </tr>
+                    </thead>
+    <tbody>
     {% for user in  users %}
     <tr>
         <td> {{ user[0] }}</td>
@@ -30,10 +58,20 @@ History
 
 
         <td><a href="{{ url_for('add_user_info') }}">ADD</a></td>
+
+        {% if current_username == "administrator" %}
         <td><a href="{{ url_for('delete_user_info') }}?user_id={{ user[0] }}">DELETE</a></td>
         <td><a href="{{ url_for('modify_user_info') }}?user_id={{ user[0] }}">MODIFY</a></td>
 
+
+        <td><a href="{{ url_for('add_user_to_be_administrator') }}?user_id={{ user[0] }}"><button class="stdbtn btn_yellow">Add</button></a></td>
+        <td><a href="{{ url_for('delete_user_not_to_be_administrator') }}?user_id={{ user[0] }}"><button class="stdbtn btn_yellow">Delete</button></a></td>
+
+        {% endif %}
+
     </tr>
     {% endfor %}
+
+    </tbody>
 </table>
 {% endblock %}

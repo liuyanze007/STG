@@ -1,46 +1,199 @@
-{% extends "layout.html" %}
-
-{% block title %}
-Leaderboard
-{% endblock %}
-
-{% block main %}
-<table>
-    <tr>
-        <th>
-            User
-        </th>
-        <th>
-            Cash
-        </th>
-        <th>
-            Assets
-        </th>
-        <th>
-            Net Worth
-        </th>
-
-        <th>
-            Add Friend
-        </th>
-
-        {% if is_administrator==1 %}
-        <th>
-            Add Person(Admin)
-        </th>
-
-        <th>
-            Delete Person (Admin)
-        </th>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>数据表格页面</title>
+<link rel="stylesheet" href="css/style.default.css" type="text/css" />
+<script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="js/custom/general.js"></script>
+<script type="text/javascript" src="js/custom/tables.js"></script>
 
 
-        <th>
-            Add TO Be Administrator
-        </th>
 
-     {% endif %}
+<link href='http://fonts.googleapis.com/css?family=Lato:400,300,700,400italic,900' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="assets/css/flexslider.css">
+<link rel="stylesheet" type="text/css" href="assets/css/animate.css">
+<link rel="stylesheet" type="text/css" href="assets/css/fractionslider.css">
+<link rel="stylesheet" href="assets/css/main.css">
 
-    </tr>
+
+
+</head>
+
+<body class="withvernav">
+
+
+<header>
+  <nav id="sticktop" class="navbar navbar-default">
+
+        <div class="container">
+
+            <div class="collapse navbar-collapse" id="navbar">
+
+                <ul class="nav navbar-nav">
+
+                  <li><a href="http://47.91.40.70:8088/dashboard">DashBoard</a></li>
+
+                  <li class="dropdown active"><a>SERVICE <i class="icon-caret-down"></i></a>
+                      <ul class="dropdown-menu">
+                      <li><a class="scrollto" href="#services">SERVICE</a></li>
+                      <li><a href="http://47.91.40.70:8088/quote">QUOTE</a></li>
+                      <li><a href="http://47.91.40.70:8088/sell">SELL</a></li>
+                      <li><a href="http://47.91.40.70:8088/buy">BUY</a></li>
+                      </ul>
+                 </li>
+
+
+                  <li class="dropdown active"><a>LEADERBOARD<i class="icon-caret-down"></i></a>
+                      <ul class="dropdown-menu">
+                       <li><a href="http://47.91.40.70:8088/leaderboard">Leaderboard</a></li>
+                       <li><a href="http://47.91.40.70:8088/friends_list">My Friends</a></li>
+                      </ul>
+                  </li>
+
+                  <li class="dropdown active"><a>HISTORY&CURRENT<i class="icon-caret-down"></i></a>
+                      <ul class="dropdown-menu">
+                      <li><a class="scrollto" href="http://47.91.40.70:8088/history">HISTORY</a></li>
+                      <li><a href="http://47.91.40.70:8088/current">CURRENT</a></li>
+                      </ul>
+                 </li>
+
+                  <li class="dropdown active"><a>PROFILE<i class="icon-caret-down"></i></a>
+                      <ul class="dropdown-menu">
+                      <li><a href="http://47.91.40.70:8088/profile">Profile</a></li>
+                      <li><a href="http://47.91.40.70:8088/price">Price</a></li>
+                      </ul>
+                 </li>
+
+                  <li><a href="http://47.91.40.70:8088/message_list">Message</a></li>
+                  <li><a href="http://47.91.40.70:8088/logout">Log Out</a></li>
+
+                </ul>
+            </div>
+       </div>
+    </nav>
+ </header>
+
+
+
+
+
+<div class="bodywrapper">
+    <div class="topheader">
+        <div class="right">
+                <!--<div class="notification">
+                <a class="count" href="notifications.html"><span>9</span></a>
+                </div>
+                        -->
+            <div class="userinfo">
+                <img src="images/thumbs/avatar.png" alt="" />
+                <span>Juan Dela Cruz</span>
+            </div><!--userinfo-->
+
+            <div class="userinfodrop">                  <div class="avatar">
+                        <a href=""><img src="images/thumbs/avatarbig.png" alt="" /></a>
+                    <div class="changetheme">
+                        Change theme: <br />
+                        <a class="default"></a>
+                        <a class="blueline"></a>
+                        <a class="greenline"></a>
+                        <a class="contrast"></a>
+                        <a class="custombg"></a>
+                    </div>
+                </div><!--avatar-->
+<div class="userdata">
+                        <h4>Juan Dela Cruz</h4>
+                    <span class="email">youremail@yourdomain.com</span>
+                    <ul>
+                        <li><a href="editprofile.html">Edit Profile</a></li>
+                        <li><a href="accountsettings.html">Account Settings</a></li>
+                        <li><a href="help.html">Help</a></li>
+                        <li><a href="index.html">Sign Out</a></li>
+                    </ul>
+                </div><!--userdata-->
+            </div><!--userinfodrop-->
+        </div><!--right-->
+    </div><!--topheader-->
+
+
+
+      <div class="centercontent tables">
+
+        <div class="pageheader notab">
+            <h1 class="pagetitle">Tables</h1>
+
+<form action="{{ url_for('search_user') }}" method="post">
+    <fieldset>
+        <div class="form-group">
+            <input name="search_key" id="search_key" placeholder="Stock Symbol" value="" />
+        </div>
+        <div class="form-group">
+            <button class="btn btn-default" type="submit">Search</button>
+        </div>
+    </fieldset>
+</form>
+
+
+        </div><!--pageheader-->
+
+
+	<div id="contentwrapper" class="contentwrapper">
+
+	<div class="contenttitle2">
+	
+	<h3>LEADER BOARD</h3>
+
+	</div>
+
+
+
+   <table cellpadding="0" cellspacing="0" border="0" class="stdtable" id="dyntable">
+
+                    <colgroup>
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th class="head0">User</th>
+                            <th class="head1">Cash</th>
+                            <th class="head0">Assets</th>
+                            <th class="head1">Net Worth</th>
+                            <th class="head0">Add Friend</th>
+        		   {% if is_administrator==1 %}
+        		   <th class="head1">
+            		    Add Person(Admin)
+        		   </th>
+
+        		   <th class="head0">
+            		   Delete Person (Admin)
+        		   </th>
+
+        		   <th class="head1">
+            		   Add TO Be Administrator
+        		   </th>
+
+        		   <th class="head0">
+            		   Delete TO Be Administrator
+        		   </th>
+
+     			  {% endif %}
+                        </tr>
+
+                    </thead>
+  <tbody>
     {% for user in leaders %}
     <tr>
 
@@ -50,20 +203,30 @@ Leaderboard
         <td>{{ usd(user[2]) }}</td>
         <td>{{ usd(user[1] + user[2]) }}</td>
 
-        <td><a href="{{ url_for('like') }}?like_id={{ user[3] }}&from_id={{ current_userid }}">Add</a></td>
+        <td><a href="{{ url_for('like') }}?like_id={{ user[3] }}&from_id={{ current_userid }}"><button class="stdbtn btn_yellow">ADD</button></a></td>
 
 
         {% if is_administrator == 1 %}
 
-        <td><a href="{{ url_for('add_user_info') }}">ADD</a></td>
-        <td><a href="{{ url_for('delete_user_info') }}?user_id={{ user[3] }}">DELETE</a></td>
+        <td><a href="{{ url_for('add_user_info') }}"><button class="stdbtn btn_yellow">ADD</button></a></td>
+        <td><a href="{{ url_for('delete_user_info') }}?user_id={{ user[3] }}"><button class="stdbtn btn_yellow">DELETE</button></a></td>
 
-        <td><a href="{{ url_for('add_user_to_be_administrator') }}?user_id={{ user[3] }}">Add To Be Administrator</a></td>
-        <td><a href="{{ url_for('delete_user_not_to_be_administrator') }}?user_id={{ user[3] }}">Delete Not To Be Administrator</a></td>
+        <td><a href="{{ url_for('add_user_to_be_administrator') }}?user_id={{ user[3] }}"><button class="stdbtn btn_yellow">Add</button></a></td>
+        <td><a href="{{ url_for('delete_user_not_to_be_administrator') }}?user_id={{ user[3] }}"><button class="stdbtn btn_yellow">Delete</button></a></td>
 
         {% endif %}
 
     </tr>
+
     {% endfor %}
+
+  </tbody>
 </table>
-{% endblock %}
+
+          <br />
+	  <br />
+        </div>
+        </div>
+</div>
+</body>
+</html>

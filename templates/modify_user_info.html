@@ -4,63 +4,79 @@
     Register
 {% endblock %}
 
-#username,cash,password,assets,fullname,email,phonenumber,facebooklink
 {% block main %}
+
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+
+<div style="width:100%;text-align:center">
+
     <form action="{{ url_for('modify_user_info') }}" method="post">
         <fieldset>
 
-            <div class="form-group">
-                <label>UserName    </label>
-                <input autocomplete="off" autofocus class="form-control" value="{{ user[0] }}" name="username" ype="text"/>
-            </div>
+                        <p>
+                            <label>Username</label>
+                            <span class="field"><input  name="username" class="smallinput" value=" {{ user[0] }}"/></span>
+                        </p>
+
+
+                        <p>
+                            <label>Password</label>
+                            <span class="field"><input  name="password" class="smallinput" value=" {{ user[1]  }}"/></span>
+                        </p>
+
+
+
+                        <p>
+                            <label>Cash</label>
+                            <span class="field"><input  name="cash" class="smallinput" value=" {{ user[2]  }}"/></span>
+                        </p>
+
+
+                        <p>
+                            <label>Assets</label>
+                            <span class="field"><input  name="assets" class="smallinput" value=" {{ user[3]  }}"/></span>
+                        </p>
+
+
+                        <p>
+                            <label>FullName</label>
+                            <span class="field"><input  name="fullname" class="smallinput" value=" {{ user[4] }}"/></span>
+                        </p>
+
+
+                        <p>
+                            <label>Email</label>
+                            <span class="field"><input  name="email" class="smallinput" value=" {{user[5] }}"/></span>
+                        </p>
+
+
+                        <p>
+                            <label>Phonenumber</label>
+                            <span class="field"><input  name="phonenumber" class="smallinput" value=" {{user[6] }}"/></span>
+                        </p>
+
+                        <p>
+                            <label>FacebookLink</label>
+                            <span class="field"><input  name="facebooklink" class="smallinput" value=" {{user[7]  }}"/></span>
+                        </p>
 
 
             <div class="form-group">
-                <label>Password </label>
-                <input class="form-control" name="password" value="{{ user[1]  }}" type="text"/>
+                <button class="stdbtn btn_yellow">Modify</button>
             </div>
 
 
-            <div class="form-group">
-                <label>Assets</label>
-                <input class="form-control" name="password" value="{{ user[2]  }}" type="text"/>
-            </div>
-
-
-            <div class="form-group">
-                <label>Cash</label>
-                <input class="form-control" name="cash" value="{{ user[3]  }}" type="text"/>
-            </div>
-
-
-            <div class="form-group">
-                <label>FullName    </label>
-                <input class="form-control" name="fullname"  value="{{ user[4]  }}" type="text"/>
-            </div>
-
-
-
-            <div class="form-group">
-                <label>Email</label>
-                <input class="form-control" name="email" value="{{ user[5]  }}"  type="text"/>
-            </div>
-
-
-            <div class="form-group">
-                <label>PhoneNumber</label>
-                <input class="form-control" name="phonenumber" value="{{ user[6]  }}"  type="text"/>
-            </div>
-
-
-            <div class="form-group">
-                <label>FacebookLink</label>
-                <input class="form-control" name="facebooklink" value="{{ user[7]  }}" type="text"/>
-            </div>
-
-
-            <div class="form-group">
-                <button class="btn btn-default" type="submit">Modify</button>
-            </div>
         </fieldset>
     </form>
+
+</div>
+
 {% endblock %}

@@ -5,20 +5,29 @@ Buy
 {% endblock %}
 
 {% block main %}
+
+</br>
+</br>
+</br>
+</br>
+</br>
+
 <h3>Purchase a stock</h3>
+<div style="width:100%;text-align:center">
 <form action="{{ url_for('buy') }}" method="post">
     <fieldset>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="stock-symbol" placeholder="Stock Symbol"
-                   type="text"/>
+            <input autocomplete="on" autofocus class="form-control" name="stock-symbol" id="symbol" placeholder="Stock Symbol"
+                   />
         </div>
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="stock-quantity" placeholder="Quantity"
-                   type="text"/>
+                   />
         </div>
         <div class="form-group">
             <button class="btn btn-default" type="submit">Purchase</button>
         </div>
     </fieldset>
 </form>
+</div>
 {% endblock %}

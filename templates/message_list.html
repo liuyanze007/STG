@@ -82,11 +82,20 @@ Leaderboard
                             <td class="aligncenter"><input type="checkbox" name="" /></td>
                             <td class="star"><a class="msgstar"></a></td>
                             <td>{{ message[1] }}</td>
+
                             {% if   message[7] == "0" %}
                              <td><a href="{{ url_for('message') }}?message_id={{ message[0] }}" class="title">{{ message[3] }}</a></td>
-        		    {% else %}
-           		    <td><a style="display: block;" href="{{ url_for('accept') }}?from_id={{ message[8] }}&message_id={{ message[0] }}">Click to Accept Or Reject</a></td>
+
+        		    {% elif  message[7] == "1" %}
+
+           		    <td><a style="display: block;" href="{{ url_for('accept') }}?from_id={{ message[8] }}&message_id={{ message[0] }}">Click to Accept Or Reject Add Friend</a></td>
+                      
+        		    {% else  %}
+
+           		      <td><a style="display: block;" href="{{ url_for('accept_transfer') }}?from_id={{ message[8] }}&message_id={{ message[0] }}&cash={{ message[10] }}">Click to Accept Or Reject Transfer Account</a></td>
+
         		    {% endif %}
+
                             <td class="attachment"></td>
                             <td class="date">{{ message[5] }}</td>
 			    <td><a href="{{ url_for('reply_message') }}?message_id={{ message[0] }}">Reply</a></td>

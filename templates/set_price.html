@@ -7,18 +7,27 @@ Leaderboard
 {% block main %}
 
 
+</br>
+</br>
+</br>
+</br>
+</br>
+
+
+<div style="width:100%;text-align:center">
+
     <form action="{{url_for('set_price') }}" method="post">
         <fieldset>
 
             <div class="form-group">
                 <label>Symbol     </label>
-                <input autocomplete="off" autofocus class="form-control" name="symbol" value="{{ symbol }}" type="text"/>
+                <input autocomplete="off" autofocus class="form-control" name="symbol" value="{{ symbol }}" />
             </div>
 
  
             <div class="form-group">
                 <label>Alarm Price</label>
-                <input autocomplete="off" autofocus class="form-control" name="price" value="{{ price }}"  type="text"/>
+                <input autocomplete="off" autofocus class="form-control" name="price" value="{{ price }}"  />
             </div>
 
             <div class="form-group">
@@ -26,7 +35,5 @@ Leaderboard
             </div>
         </fieldset>
     </form>
-
-
-
+</div>
 {% endblock %}

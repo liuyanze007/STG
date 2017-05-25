@@ -4,33 +4,49 @@
 Index
 {% endblock %}
 
+
 {% block main %}
-<h1 class="cash">Cash: {{ usd(current_cash) }}</h1>
-<h1 class="cash">Assets: {{ usd(stocks_value) }}</h1>
-<table>
-    <tr>
-        <th>
-            Symbol
-        </th>
-        <th>
-            Security Name
-        </th>
-        <th>
-            Shares Available
-        </th>
-        <th>
-            Current Price
-        </th>
-    </tr>
-    {% for stock in available %}
-    {% if stock[1] > 0 %}
-    <tr>
-        <td>{{ stock[0] }}</td>
-        <td>{{ lookup(stock[0])["name"] }}</td>
-        <td>{{ stock[1] }}</td>
-        <td>{{ usd(lookup(stock[0])["price"]) }}</td>
-    </tr>
-    {% endif %}
-    {% endfor %}
-</table>
+
+<div class="clearfix"></div>
+     <section id="services" class="container">
+        <h1><span>21</span>Services</h1>
+        <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-10 col-sm-offset-1 col-lg-offset-2 col-md-offset-2">
+                        <div class="section-line">We understand your story is unique. That is why our micro-campaigns and solutions are individually crafted for each of our clients.</div>
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-6">
+                <div class="service rotateX360">
+                    <span class="desktopIcon"></span>
+                    <h4><a href="{{ url_for('quote') }}">SYMBOL QUOTA</a></h4>
+                    <p>We provide symbol quota search service for our customers.</p>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-6 col-lg-offset-2 col-md-offset-2">
+                <div class="service rotateX360">
+                    <span class="colorsIcon"><a href="{{ url_for('sell') }}"></a></span>
+                    <h4><a href="{{ url_for('sell') }}">SYMBOL SELL</a></h4>
+                    <p>We provide symbol sell service for our customers.</p>
+                 </div>
+            </div>
+        </div><!--//row-->
+         <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-6">
+                <div class="service rotateX360">
+                    <span class=""><a href="{{ url_for('buy') }}"></a></span>
+                    <h4><a href="{{ url_for('buy') }}">SYMBOL BUY</a></h4>
+                    <p>We provide symbol buy service for our customers.</p>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-6 col-lg-offset-2 col-md-offset-2">
+                <div class="service rotateX360">
+                    <span class="pencilIcon"><a href="{{ url_for('history') }}"></a></span>
+                    <h4><a href="{{ url_for('history') }}">TRAIN HISTORY</a></h4>
+                    <p>We provide symbol history search service for our customers.</p>
+                 </div>
+            </div>
+        </div><!--//row-->
+    </section>
+
 {% endblock %}

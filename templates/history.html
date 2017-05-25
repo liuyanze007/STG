@@ -5,7 +5,7 @@ History
 {% endblock %}
 
 {% block main %}
-
+<div style="width:100%;text-align:center">
 
 <form action="{{ url_for('history') }}" method="post">
 
@@ -14,14 +14,14 @@ History
         <p class="subtit"><h3>Transaction-StartTime</h3></p>
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="Transaction_StartTime" id="Transaction_StartTime" placeholder="Transaction-StartTime"
-                   type="text"/>
+                   />
         </div>
 
 
         <p class="subtit"><h3>Transaction-EndTime</h3></p>
         <div class="form-group">
             <input autocomplete="off" autofocus class="form-control" name="Transaction_EndTime"  id="Transaction_EndTime" placeholder="Transaction_EndTime"
-                   type="text"/>
+                   />
         </div>
         <div class="form-group">
             <button class="btn btn-default" type="submit">Search</button>
@@ -29,17 +29,39 @@ History
     </fieldset>
 </form>
 
+</div>
 
 
-<table>
-    <tr>
-        <th>Transaction Number</th>
-        <th>Symbol</th>
-        <th>Security Name</th>
-        <th>Price</th>
-        <th>Number of Shares</th>
-        <th>Transaction Date</th>
-    </tr>
+
+<div id="contentwrapper" class="contentwrapper">
+
+<div class="contenttitle2">
+  <h3>HISTORY</h3>
+</div>
+
+<table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablequick">
+
+                    <colgroup>
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+        		   <th class="head0">Transaction Number</th>
+        		   <th class="head1">Symbol</th>
+        		   <th class="head0">Security Name</th>
+        		   <th class="head1">Price</th>
+        		   <th class="head0">Number of Shares</th>
+        		   <th class="head1">Transaction Date</th>
+                        </tr>
+
+                    </thead>
+    <tbody>
     {% for transaction in transactions %}
     <tr>
         <td> <a href="{{ url_for('history') }}"> {{ transaction[0] }}</a></td>
@@ -50,5 +72,6 @@ History
         <td>{{ transaction[5] }}</td>
     </tr>
     {% endfor %}
+    </tbody>
 </table>
 {% endblock %}
