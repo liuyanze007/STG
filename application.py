@@ -5,6 +5,7 @@ import time
 import os
 
 import random
+import json
 
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
@@ -297,19 +298,49 @@ def history_others():
 
 
 
+@app.route("/unreadnews_count")
+@login_required
+def unreadnews_count():
+    if request.method == "GET":
+        try:
+           current_user = session["user_id"]
+           temp_message_list = c.execute("SELECT id,from_id,to_id,title,message,time,read_flag,type FROM message_info where to_id = ?",[current_user]).fetchall()
+           db.commit()
+           all_message_count=len(temp_message_list);
+           unread_message_list = c.execute("SELECT id,from_id,to_id,title,message,time,read_flag,type FROM message_info where to_id = ? and read_flag=0",[current_user]).fetchall()
+           db.commit()
+           unread_message_count=len(unread_message_list);
+           return json.dumps({"count":unread_message_count});
+        except sqlite3.IntegrityError:
+           return apology("Error", "Username taken")
+
+
+
+
+
+
 @app.route("/leaderboard")
 @login_required
 def leaderboard():
-
     leaders = c.execute("SELECT username, cash, assets,id,is_administrator FROM users ORDER BY cash + assets DESC").fetchall()
-
     current_user = session["user_id"]
-
     user=c.execute("SELECT username,is_administrator FROM users WHERE id = :user_id", [current_user]).fetchall()[0]
-
-    print(user[1]);
-
     return render_template("leaderboard.html", leaders=leaders, usd=usd,current_username=user[0],current_userid=current_user,is_administrator=user[1])
+
+
+
+
+@app.route("/search_user",methods=["GET", "POST"])
+@login_required
+def search_user():
+    if request.method == "POST":
+       search_key=request.form.get("search_key")
+       sql="SELECT username, cash, assets,id,is_administrator FROM users where username like '%"+search_key+"%' ORDER BY cash + assets DESC";
+       leaders = c.execute(sql).fetchall()
+       current_user = session["user_id"]
+       user=c.execute("SELECT username,is_administrator FROM users WHERE id = :user_id", [current_user]).fetchall()[0]
+       return render_template("leaderboard.html", leaders=leaders, usd=usd,current_username=user[0],current_userid=current_user,is_administrator=user[1])
+
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -566,6 +597,135 @@ def reject_like():
 
 
 
+
+
+@app.route("/transfer_account", methods=["GET", "POST"])
+
+def transfer_account():
+    if request.method == "GET":
+        from_id= request.args.get("from_id")
+        to_id= request.args.get("to_id")
+        try:
+           return render_template("transfer_account.html",from_id=from_id,to_id=to_id)
+        except sqlite3.IntegrityError:
+            return apology("Error", "Username taken")
+
+
+
+    elif request.method == "POST":
+        if not request.form.get("from_id"):
+            return apology("Error", "Forgot from_id")
+        elif not request.form.get("to_id"):
+            return apology("Error", "Forgot to_id")
+
+        from_id= request.form.get("from_id")
+        to_id= request.form.get("to_id")
+        cash= request.form.get("cash")
+
+        try:
+            title="transfer_account_message";
+            message="click_this_to_accepted: "+" http://47.91.40.70:8088"+url_for("accept_transfer")+"?from_id="+from_id+"&cash="+cash;
+            return redirect(url_for("send_message")+"?from_id="+from_id+"&to_id="+to_id+"&cash="+cash+"&title="+title+"&message="+message)
+        except sqlite3.IntegrityError:
+            return apology("Error", "Username taken")
+
+
+@app.route("/accept_transfer", methods=["GET", "POST"])
+def accept_transfer():
+    # if get request return register template
+    if request.method == "GET":
+        from_id= request.args.get("from_id")
+        message_id= request.args.get("message_id")
+        to_id= session["user_id"]
+
+        cash=request.args.get("cash")
+
+        try:
+           c.execute("UPDATE message_info set read_flag=1 WHERE  id= ?", [message_id])
+           db.commit()
+
+           cash1=0
+           cash2=0
+           from_user_cash= c.execute("SELECT cash FROM users WHERE  id= ?", [from_id]).fetchall()[0]
+           if len(from_user_cash)>0:
+              cash1=from_user_cash[0]
+           to_user_cash= c.execute("SELECT cash FROM users WHERE  id= ?", [to_id]).fetchall()[0]
+           if len(to_user_cash)>0:
+              cash2=to_user_cash[0]
+           cash1_new=float(cash1)-float(cash)
+           cash2_new=float(cash2)+float(cash)
+           c.execute("UPDATE users set cash = ? WHERE  id= ?", [cash1_new,from_id])
+           db.commit()
+           c.execute("UPDATE users set cash = ? WHERE  id= ?", [cash2_new,to_id])
+           db.commit()
+           # send user details to database
+           #c.execute("INSERT INTO transfer_info(from_id,to_id,cash) VALUES(?,?,?)", [from_id,to_id,cash])
+           #db.commit()
+           return redirect(url_for("friends_list"))
+        except sqlite3.IntegrityError:
+            return apology("Error", "Username taken")
+
+
+    elif request.method == "POST":
+        if not request.form.get("from_id"):
+            return apology("Error", "Forgot from_id")
+        elif not request.form.get("to_id"):
+            return apology("Error", "Forgot to_id")
+
+        cash=request.form.get("cash")
+        try:
+
+            cash1=0
+            cash2=0
+            from_user_cash= c.execute("SELECT cash FROM user WHERE  id= ?", [from_id]).fetchall()[0]
+            if len(from_user_cash)>0:
+               cash1=from_user_cash[0]
+            to_user_cash= c.execute("SELECT cash FROM user WHERE  id= ?", [to_id]).fetchall()[0]
+            if len(to_user_cash)>0:
+               cash2=to_user_cash[0]
+            cash1_new=float(cash1)-float(cash)
+            cash2_new=float(cash2)+float(cash)
+            c.execute("UPDATE user set cash = ? WHERE  id= ?", [from_user_cash,from_id])
+            db.commit()
+            c.execute("UPDATE user set cash = ? WHERE  id= ?", [to_user_cash,to_id])
+            db.commit()
+            # send user details to database
+            c.execute("INSERT INTO transfer_info(from_id,to_id,cash) VALUES(?,?,?)", [from_id,to_id,cash])
+            db.commit()
+                 
+            return redirect(url_for("index"))
+        except sqlite3.IntegrityError:
+            return apology("Error", "Username taken")
+
+
+@app.route("/reject_transfer", methods=["GET", "POST"])
+def reject_transfer():
+    # if get request return register template
+    if request.method == "GET":
+        from_id= request.args.get("from_id")
+        message_id= request.args.get("message_id")
+        to_id= session["user_id"]
+        try:
+           c.execute("UPDATE message_info set read_flag=1 WHERE  id= ?", [message_id])
+           db.commit()
+           return redirect(url_for("friends_list"))
+        except sqlite3.IntegrityError:
+           return apology("Error", "Username taken")
+ 
+    elif request.method == "POST":
+        # check fields for completion
+        if not request.form.get("from_id"):
+            return apology("Error", "Forgot from_id")
+        elif not request.form.get("to_id"):
+            return apology("Error", "Forgot to_id")
+        try:
+            return redirect(url_for("index"))
+        except sqlite3.IntegrityError:
+            return apology("Error", "Username taken")
+
+
+
+
 @app.route("/send_message", methods=["GET", "POST"])
 def send_message():
     if request.method == "GET":
@@ -573,16 +733,21 @@ def send_message():
         to_id= request.args.get("to_id")
         title=request.args.get("title")
         message=request.args.get("message")
-        try:
 
+        type_string=1;
+        if request.args.get("cash"):
+           cash=int(request.args.get("cash"))
+           type_string=2;
+        else:
+           cash=0    
+        try:
            if title or message:
               timestamp=int(time.time())
-              c.execute("INSERT INTO message_info(from_id,to_id,title,message,time,read_flag,type) VALUES(:from_id, :to_id,:title,:message,:time,:read_flag,:type)", [from_id,to_id,title,message,timestamp,0,1])
+              c.execute("INSERT INTO message_info(from_id,to_id,title,message,time,read_flag,type,cash) VALUES(?,?,?,?,?,?,?,?)", [from_id,to_id,title,message,timestamp,0,type_string,cash])
               db.commit()
-              return redirect(url_for("message_list"))
+              return redirect(url_for("index"))
            else:
-              return render_template("send_message.html",from_id=from_id,to_id=to_id)
-        #if username is not unique alert user
+              return redirect(url_for("index"))
         except sqlite3.IntegrityError:
             return apology("Error", "Username taken")
     # if post request
@@ -711,11 +876,11 @@ def message_list():
     if request.method == "GET":
         try:
            current_user = session["user_id"]
-           temp_message_list = c.execute("SELECT id,from_id,to_id,title,message,time,read_flag,type FROM message_info where to_id = ?",[current_user]).fetchall()
+           temp_message_list = c.execute("SELECT id,from_id,to_id,title,message,time,read_flag,type,cash FROM message_info where to_id = ?",[current_user]).fetchall()
            db.commit()
            all_message_count=len(temp_message_list);
 
-           unread_message_list = c.execute("SELECT id,from_id,to_id,title,message,time,read_flag,type FROM message_info where to_id = ? and read_flag=0",[current_user]).fetchall()
+           unread_message_list = c.execute("SELECT id,from_id,to_id,title,message,time,read_flag,type,cash FROM message_info where to_id = ? and read_flag=0",[current_user]).fetchall()
            db.commit()
 
            unread_message_count=len(unread_message_list);
@@ -742,6 +907,8 @@ def message_list():
 
 
 
+
+
                   timeArray = time.localtime(int(time1))  
                   time1= time.strftime("%Y-%m-%d %H:%M:%S", timeArray)  
 
@@ -749,12 +916,15 @@ def message_list():
 
                   type=str(temp_message_list[index][7])
 
+
+                  cash=str(temp_message_list[index][8])
+
                   from_user_info= c.execute("SELECT  username FROM users WHERE id = ? ", [temp_message_list[index][1]]).fetchall()[0]
                   from_username=from_user_info[0]
 
                   to_user_info= c.execute("SELECT  username FROM users WHERE id = ? ", [temp_message_list[index][2]]).fetchall()[0]
                   to_username=to_user_info[0]
-                  message_list.append([message_id,from_username,to_username,title,message,time1,read_flag,type,from_id,to_id])
+                  message_list.append([message_id,from_username,to_username,title,message,time1,read_flag,type,from_id,to_id,cash])
            return render_template("message_list.html",message_list=message_list,all_message_count=all_message_count,unread_message_count=unread_message_count)
         except sqlite3.IntegrityError:
             return apology("Error", "Username taken")
